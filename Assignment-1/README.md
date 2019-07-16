@@ -18,7 +18,7 @@ names and the sequence is read until an EOF is encountered.
 3. Write a c program to set up a child-TO-parent pipe; the child 
 should 'exec' to perform a "pre" process and its output should be 
 connected to the pipe connected to the parent, which should 'exec' to 
-perform a "sort" process. 
+perform a "sort" process.  
 
 4. Write a program to take a UNIX command from the command line
 and fork() a child to execute it.  
@@ -38,11 +38,11 @@ To compile the files you can simply copy and paste the commands below:
 ```console
 gcc pre.c
 ```
-To run the executable file that was created input ./a.out in the terminal:
+To run the executable file that pre.c created input ./a.out in the terminal:
 ```console
 ./a.out
 ```
-This will run and allow you to names and their associated gpa. The input should be formatted to look like the following  
+This will execute pre.c and allow you to names and their associated gpa. The input should be formatted to look like the following  
 ```
 Zebra 3.0
 Monkey 1.1
@@ -56,8 +56,72 @@ Timbo
 Zebra
 ```  
 - Assignment sort.c  
+Just like before copy and paste the following command to execute the sort.c file:
 ```console
 gcc sort.c
+```  
+To run the executable file that sort.c created input ./a.out in the terminal:
+```console
+./a.out
+```  
+This will execute the sort.c and allow you to enter no more than 10 names to be sorted. Input should follow this format:  
 ```
-
-
+Zebra
+Monkey
+.
+.
+.
+Timbo
+```  
+Sort.c will then sort the names alphabetically and produce the following output:  
+```
+Timbo
+.
+.
+.
+Monkey
+Zebra
+```  
+- Assignment pipe.c
+To compile pipe.c use the following commands:  
+```console
+gcc pre.c -o pre
+gcc sort.c -o sort
+```
+Followed by  
+```console
+gcc pipe.c
+```
+To run the executable file that pipe.c created input ./a.out in the terminal:
+```console
+./a.out
+```  
+Just like before pre.c will prompt you to enter names and associated gpas    
+The input should follow the same structure as before:  
+```
+Zebra 3.0
+Monkey 1.1
+Timbo 3.3
+Alex 1.1
+CTRL-D
+```  
+Now sort.c will sort the output from pre.c. The output should follow as before:
+```
+Timbo
+Zebra
+```
+- Assignment prog3.c
+To compile prog3.c copy and paste the following command in the terminal:  
+```console
+gcc prog3.c
+```  
+To run the executable file that prog3 created copy and paste the following command in the terminal:
+```console
+./a.out ls 
+or
+./a.out ls -a
+or 
+./a.out ls -t
+or 
+./a.out <any unix command>
+```  
