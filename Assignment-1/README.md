@@ -41,7 +41,7 @@ gcc sort.c
 gcc pre.c -o pre
 gcc sort.c -o sort
 gcc pipe.c
-``
+```
 To run the executable file that was created input ./a.out in the terminal:
 ```c
 ./a.out
