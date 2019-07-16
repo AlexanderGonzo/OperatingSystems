@@ -5,8 +5,6 @@
 ## Requirements
 
 CS 4328 Lab 1 
-                   
-1. Write small c programs.  
 
 1). The first program "pre.c" 
 should read in a list of student names and their GPAs. You can make up a list. To be simple, you 
@@ -64,10 +62,10 @@ getppid() functions.
 ### How to run the files.
 1.) First unzip the folder and navigate into the Assignment - 1 folder.
 2.) Once you are inside the Assignment -1 folder you can begin compiling the assignment files.
-3.) Now you will need to open a terminal in this directory. You can do this by following these instructions:
-    Windows 10 ``` hold shift + right click ``` you will see "open powershell window here" click that. 
-    Mac ``` right click the Assignment 1 folder and navigate to Services. Here you should see "New Terminal at Folder" ```
-    Linux Distros ```simply right click the Assignment -1 folder and click "Open in Terminal"
+3.) Now you will need to open a terminal in this directory. You can do this by following these instructions:  
+   * Windows 10 ``` hold shift + right click ``` you will see "open powershell window here" click that.  
+   * Mac ``` right click the Assignment 1 folder and navigate to Services. Here you should see "New Terminal at Folder" ```  
+   * Linux Distros ```simply right click the Assignment -1 folder and click "Open in Terminal"  
     
 To compile the files you will use gcc in the terminal:
 ```
