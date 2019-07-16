@@ -1,4 +1,4 @@
-# Assignment 1 CS 4328 Lab 1
+# **Assignment 1 CS 4328 Lab 1**
 
 
 
@@ -23,7 +23,7 @@ perform a "sort" process.
 4. Write a program to take a UNIX command from the command line
 and fork() a child to execute it.  
 
-### How to run the files.
+### **How to run the files!**
 
 1.) First unzip the folder and navigate into the Assignment - 1 folder.  
 2.) Once you are inside the Assignment -1 folder you can begin compiling the assignment files.  
@@ -34,16 +34,30 @@ and fork() a child to execute it.
 4.)Once the terminal is open you can start compiling the files. To do so following the instructions below. 
     
 To compile the files you can simply copy and paste the commands below:
-```bash
+- Assignment pre.c
+```console
 gcc pre.c
-gcc sort.c
-gcc pre.c -o pre
-gcc sort.c -o sort
-gcc pipe.c
 ```
 To run the executable file that was created input ./a.out in the terminal:
 ```console
 ./a.out
+```
+This will run and allow you to names and their associated gpa. The input should be formatted to look like the following  
+```
+Zebra 3.0
+Monkey 1.1
+Timbo 3.3
+Alex 1.1
+CTRL-D
+```  
+The output should produce the names associated with gpa's higher than 3.0. Output from the example:  
+```
+Timbo
+Zebra
+```  
+- Assignment sort.c  
+```console
+gcc sort.c
 ```
 
 
