@@ -26,8 +26,8 @@ and fork() a child to execute it.
 
 
 ### How to run the files.
-1.) First unzip the folder and navigate into the Assignment - 1 folder.
-2.) Once you are inside the Assignment -1 folder you can begin compiling the assignment files.
+1.) First unzip the folder and navigate into the Assignment - 1 folder.  
+2.) Once you are inside the Assignment -1 folder you can begin compiling the assignment files.  
 3.) Now you will need to open a terminal in this directory. You can do this by following these instructions:  
    * Windows 10 ``` hold shift + right click ``` you will see "open powershell window here" click that.  
    * Mac ``` right click the Assignment 1 folder and navigate to Services. Here you should see "New Terminal at Folder" ```  
