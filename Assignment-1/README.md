@@ -34,7 +34,7 @@ and fork() a child to execute it.
 4.)Once the terminal is open you can start compiling the files. To do so following the instructions below. 
     
 To compile the files you can simply copy and paste the commands below:
-```console
+```terminal
 gcc pre.c
 gcc sort.c
 gcc pre.c -o pre
