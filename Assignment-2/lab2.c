@@ -9,13 +9,10 @@
 #include <fcntl.h>
 
 int main(){
+
     /* Variables given by professor: used for command and parsing */
     char *path, *argv[20], buffer[80], n, *parse;
     int m, status, inword, continu , j, k;
-
-    /*Flags that will handle redirection of input and output. */
-    char *in_Path, *out_Path;
-    int inputRedirectionFlag, outputRedirectionFlag; 
 
     /*Variables for Piping and the Pipe Initialization  */
     pid_t pid;
@@ -25,12 +22,17 @@ int main(){
     /* Starting point for argument locations in argv[] */
     int startArgs[20] = {0};
 
+
+    /*Flags that will handle redirection of input and output. */
+    char *in_Path, *out_Path;
+    int inputFlag, outputFlag; 
+
     while (1){
 
         /* resets parsing and pipe variables for every loop */
         inword = continu = m = pCounter = pipes = pid = j = k = 0;
         /* redirection flags */
-        inputRedirectionFlag = outputRedirectionFlag = 0;
+        inputFlag = outputFlag = 0;
         /* start parsing at bufferferfer */
         parse = buffer;
 
@@ -65,11 +67,11 @@ int main(){
         *parse++ = 0;
         argv[m] = 0;
 
-        /* Exit Prompt defined by project requirements  */
+        /* Exit Prompt defined by project requirements */
         if (strcmp(argv[0], "exit") == 0){
             exit(0);
         }
-        /* Redirection Management*/
+        /* Redirection Manager: Handles Pipes, Input, and Output Redirection*/
         while(argv[pCounter] != 0){
 
             /* Pipe Handler*/
@@ -82,31 +84,34 @@ int main(){
             else if(strcmp(argv[pCounter], "<") == 0){
                 in_Path = strdup(argv[pCounter + 1]);
                 argv[pCounter] = 0;
-                inputRedirectionFlag = 1;
+                inputFlag = 1;
             }
             /* Output Redirection Handler */
             else if(strcmp(argv[pCounter], ">") == 0){
                 out_Path = strdup(argv[pCounter + 1]);
                 argv[pCounter] = 0;
-                outputRedirectionFlag = 1;
-            }else{
+                outputFlag = 1;
+            }/* Normal Commands i.e no pipes or redirections */
+            else{
                 startArgs[pCounter] = pCounter;
             }
-            pCounter++;
+            ++pCounter;
         }
-        for (j = 0; j <= pipes; j++){
+        /* Pipe Counting. Needed to know for processes */
+        for (j = 0; j <= pipes; ++j){
             if(pipes > 0 && j != pipes){
                 pipe(right_fd);
             }
 
-            switch (pid = fork())
-            {
+            /* Process Management: Handles Parent and Children processes  */
+            switch (pid = fork()){
             case -1:
                 perror("Fork has failed");
                 break;
-            case 0: /* Child will check for Redirection and Execute */
+            case 0: 
+                /* Child will check for Redirection and Execute the commands given by users*/
                 /* Checking for  Input Redirection */
-                if ((j == 0) && (inputRedirectionFlag == 1))
+                if ((j == 0) && (inputFlag == 1))
                 {
                     int inputFile = open(in_Path, O_RDONLY, 0400);
                     if (inputFile == -1)
@@ -114,12 +119,12 @@ int main(){
                         perror("Input file failed to open\n");
                         return (EXIT_FAILURE);
                     }
-                    close(1);
+                    close(0);
                     dup(inputFile);
                     close(inputFile);
                 }
                 /* Checking for Output Redirection */
-                if ((j == pipes) && (outputRedirectionFlag == 1))
+                if ((j == pipes) && (outputFlag == 1))
                 {
                     int outputFile = creat(out_Path, 0700);
                     if (outputFile < 0)
@@ -127,55 +132,58 @@ int main(){
                         perror("The Output file has failed to open.\n");
                         return (EXIT_FAILURE);
                     }
-                    close(0);
+                    close(1);
                     dup(outputFile);
                     close(outputFile);
                 }
+                /* Closes and Opens pipes depending on reading or writing */
                 if (pipes > 0)
                 {
                     if (j == 0)
                     {
-                        close(0);
-                        dup(right_fd[0]);
-                        close(right_fd[0]);
+                        close(1);
+                        dup(right_fd[1]);
                         close(right_fd[1]);
+                        close(right_fd[0]);
                     }
                     else if (j < pipes)
                     {
-                        close(1);
-                        dup(left_fd[1]);
-                        close(left_fd[1]);
-                        close(left_fd[0]);
                         close(0);
-                        dup(right_fd[0]);
-                        close(right_fd[1]);
+                        dup(left_fd[0]);
+                        close(left_fd[0]);
+                        close(left_fd[1]);
+                        close(1);
+                        dup(right_fd[1]);
                         close(right_fd[0]);
+                        close(right_fd[1]);
                     }
                     else
                     {
-                        close(1);
-                        dup(left_fd[1]);
-                        close(left_fd[1]);
+                        close(0);
+                        dup(left_fd[0]);
                         close(left_fd[0]);
+                        close(left_fd[1]);
                     }
                 }
+                /* Execution of the commands. */
                 execvp(argv[startArgs[j]], &argv[startArgs[j]]);
                 perror("Execution of command failed\n");
                 break;
             default:
                 if (j > 0)
                 {
-                    close(left_fd[1]);
+                    close(left_fd[0]);
                     close(left_fd[1]);
                 }
-                left_fd[1] = right_fd[1];
                 left_fd[0] = right_fd[0];
+                left_fd[1] = right_fd[1];
 
                 wait(&status);
                 break;
             }
         }
-        for(k = 0; k < 20; k++){
+        /* This will clean the arguments for the next run */
+        for(k = 0; k < 20; ++k){
             argv[k] = 0;
         }
     }
