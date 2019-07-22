@@ -11,30 +11,28 @@
 int main(){
 
     /* Variables given by professor: used for command and parsing */
-    char *path, *argv[20], buffer[80], n, *parse;
-    int m, status, inword, continu , j, k;
+    char *path, *argv[20], buffer[80], n, *p ,*out_Path;
+    int m, status, inword, continu, j, k;
 
-    /*Variables for Piping and the Pipe Initialization  */
+    /*Variables for Piping and the Pipe Initialization,
+      Starting point for argument locations in argv[], 
+      Flags that will handle redirection of input and output.
+        */
     pid_t pid;
     int pCounter, pipes;
     int right_fd[2], left_fd[2];
-
-    /* Starting point for argument locations in argv[] */
-    int startArgs[20] = {0};
-
-
-    /*Flags that will handle redirection of input and output. */
-    char *in_Path, *out_Path;
+    int st[20] = {0};
     int inputFlag, outputFlag; 
 
     while (1){
 
-        /* resets parsing and pipe variables for every loop */
+        /* Resets parsing and pipe variables for every loop, 
+           start parsing at buffer, 
+           redirection flags.
+        */
         inword = continu = m = pCounter = pipes = pid = j = k = 0;
-        /* redirection flags */
+        p = buffer;
         inputFlag = outputFlag = 0;
-        /* start parsing at bufferferfer */
-        parse = buffer;
 
         /*Shell*/
         printf("\nshhh> ");
@@ -46,7 +44,7 @@ int main(){
                 if (inword)
                 {
                     inword = 0;
-                    *parse++ = 0;
+                    *p++ = 0;
                 }
             }
             else if (n == '\n')
@@ -57,14 +55,14 @@ int main(){
                 if (!inword)
                 {
                     inword = 1;
-                    argv[m++] = parse;
-                    *parse++ = n;
+                    argv[m++] = p;
+                    *p++ = n;
                 }
                 else
-                    *parse++ = n;
+                    *p++ = n;
             }
         }
-        *parse++ = 0;
+        *p++ = 0;
         argv[m] = 0;
 
         /* Exit Prompt defined by project requirements */
@@ -77,12 +75,12 @@ int main(){
             /* Pipe Handler*/
             if(strcmp(argv[pCounter], "|") == 0){
                 argv[pCounter] = 0;
-                startArgs[pipes + 1] = pCounter + 1;
+                st[pipes + 1] = pCounter + 1;
                 pipes++;
             } 
             /* Input Redirection Handler*/
             else if(strcmp(argv[pCounter], "<") == 0){
-                in_Path = strdup(argv[pCounter + 1]);
+                path = strdup(argv[pCounter + 1]);
                 argv[pCounter] = 0;
                 inputFlag = 1;
             }
@@ -93,7 +91,7 @@ int main(){
                 outputFlag = 1;
             }/* Normal Commands i.e no pipes or redirections */
             else{
-                startArgs[pCounter] = pCounter;
+                st[pCounter] = pCounter;
             }
             ++pCounter;
         }
@@ -113,7 +111,7 @@ int main(){
                 /* Checking for  Input Redirection */
                 if ((j == 0) && (inputFlag == 1))
                 {
-                    int inputFile = open(in_Path, O_RDONLY, 0400);
+                    int inputFile = open(path, O_RDONLY, 0400);
                     if (inputFile == -1)
                     {
                         perror("Input file failed to open\n");
@@ -166,7 +164,7 @@ int main(){
                     }
                 }
                 /* Execution of the commands. */
-                execvp(argv[startArgs[j]], &argv[startArgs[j]]);
+                execvp(argv[st[j]], &argv[st[j]]);
                 perror("Execution of command failed\n");
                 break;
             default:
