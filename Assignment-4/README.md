@@ -1,4 +1,4 @@
-# **Assignment 4 CS 4328 Lab 4**
+# **Assignment 4 CS 4328 Lab 4 Page Replacement Algorithms**
 
 ## Requirements 
 Write a program that takes a reference string and the number
