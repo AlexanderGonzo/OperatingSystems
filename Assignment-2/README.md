@@ -1,4 +1,4 @@
-# **Assignment 2 CS 4328 Lab 2**
+# **Assignment 2 CS 4328 Lab 2 Terminal Simulator**
 
 ## Requirements 
 Write a small shell - called shhh - that has the 
